@@ -1,205 +1,153 @@
 class ColorAnalysis {
   constructor() {
-    this.modal = document.getElementById('color-analysis-modal');
-    this.video = document.getElementById('camera-feed');
-    this.canvas = document.getElementById('capture-canvas');
+    this.cameraContainer = document.getElementById('camera-container');
+    this.cameraFeed = document.getElementById('camera-feed');
     this.overlayCanvas = document.getElementById('overlay-canvas');
-    this.ctx = this.canvas.getContext('2d');
-    this.overlayCtx = this.overlayCanvas.getContext('2d');
+    this.canvas = document.getElementById('canvas');
     this.captureBtn = document.getElementById('capture-btn');
     this.retakeBtn = document.getElementById('retake-btn');
     this.analyzeBtn = document.getElementById('analyze-btn');
-    this.closeBtn = document.getElementById('close-modal');
-    this.loadingIndicator = document.getElementById('loading');
+    this.closeBtn = document.getElementById('close-camera');
+    this.loading = document.getElementById('loading');
     this.statusMessage = document.getElementById('status-message');
     this.postCaptureControls = document.querySelector('.post-capture-controls');
-    
+
     this.stream = null;
-    this.isCapturing = false;
-    this.imageData = null;
-    
+    this.isCaptured = false;
+
     this.initializeEventListeners();
   }
 
   initializeEventListeners() {
-    // Open modal when start analysis button is clicked
-    document.querySelectorAll('[data-start-analysis]').forEach(button => {
-      button.addEventListener('click', () => this.openModal());
-    });
+    // Close button
+    this.closeBtn.addEventListener('click', () => this.closeCamera());
 
-    this.captureBtn.addEventListener('click', () => this.captureImage());
+    // Capture button
+    this.captureBtn.addEventListener('click', () => this.capturePhoto());
+
+    // Retake button
     this.retakeBtn.addEventListener('click', () => this.retakePhoto());
-    this.analyzeBtn.addEventListener('click', () => this.analyzeImage());
-    this.closeBtn.addEventListener('click', () => this.closeModal());
 
-    // Close modal on escape key
+    // Analyze button
+    this.analyzeBtn.addEventListener('click', () => this.analyzePhoto());
+
+    // Escape key to close
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.modal.style.display === 'flex') {
-        this.closeModal();
-      }
+      if (e.key === 'Escape') this.closeCamera();
+    });
+
+    // Click outside to close
+    this.cameraContainer.addEventListener('click', (e) => {
+      if (e.target === this.cameraContainer) this.closeCamera();
     });
   }
 
-  async openModal() {
-    this.modal.style.display = 'flex';
-    await this.startCamera();
-  }
-
-  async startCamera() {
+  async openCamera() {
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({
-        video: { 
-          facingMode: "user",
+        video: {
+          facingMode: 'user',
           width: { ideal: 1280 },
-          height: { ideal: 720 }
-        }
+          height: { ideal: 720 },
+        },
       });
-      
-      this.video.srcObject = this.stream;
-      
-      // Set canvas sizes when video is ready
-      this.video.onloadedmetadata = () => {
-        this.canvas.width = this.video.videoWidth;
-        this.canvas.height = this.video.videoHeight;
-        this.overlayCanvas.width = this.video.videoWidth;
-        this.overlayCanvas.height = this.video.videoHeight;
-      };
+
+      this.cameraFeed.srcObject = this.stream;
+      this.cameraContainer.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      // Start face detection
+      this.startFaceDetection();
     } catch (error) {
-      console.error('Camera error:', error);
-      this.updateStatus('Error accessing camera: ' + error.message);
+      console.error('Error accessing camera:', error);
+      this.statusMessage.textContent = 'Error accessing camera. Please ensure you have granted camera permissions.';
     }
   }
 
-  captureImage() {
-    try {
-      this.isCapturing = true;
-      
-      // Match dimensions of video
-      this.canvas.width = this.video.videoWidth;
-      this.canvas.height = this.video.videoHeight;
-      
-      // Clear canvas and draw video frame
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.drawImage(this.video, 0, 0);
-      
-      // Store image data
-      this.imageData = this.canvas.toDataURL('image/jpeg');
-      
-      // Hide video and overlay elements
-      this.video.style.display = 'none';
-      this.overlayCanvas.style.display = 'none';
-      this.canvas.classList.remove('hidden');
-      
-      // Update UI controls
-      this.postCaptureControls.classList.remove('hidden');
-      this.captureBtn.classList.add('hidden');
-      
-      this.updateStatus('Looks Great! Click analyze to begin analysis.');
-    } catch (error) {
-      console.error('Capture error:', error);
-      this.updateStatus('Failed to capture image. Please try again.');
+  closeCamera() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((track) => track.stop());
+      this.stream = null;
     }
+
+    this.cameraContainer.style.display = 'none';
+    document.body.style.overflow = '';
+    this.resetState();
+  }
+
+  resetState() {
+    this.isCaptured = false;
+    this.captureBtn.style.display = 'block';
+    this.postCaptureControls.classList.add('hidden');
+    this.statusMessage.textContent = 'Position your face in the center';
+    this.overlayCanvas.classList.remove('hidden');
+    this.canvas.classList.add('hidden');
+  }
+
+  capturePhoto() {
+    const context = this.canvas.getContext('2d');
+    this.canvas.width = this.cameraFeed.videoWidth;
+    this.canvas.height = this.cameraFeed.videoHeight;
+
+    // Draw the current frame
+    context.drawImage(this.cameraFeed, 0, 0);
+
+    // Hide camera feed and show captured image
+    this.cameraFeed.style.display = 'none';
+    this.overlayCanvas.classList.add('hidden');
+    this.canvas.classList.remove('hidden');
+
+    // Show post-capture controls
+    this.captureBtn.style.display = 'none';
+    this.postCaptureControls.classList.remove('hidden');
+
+    this.isCaptured = true;
   }
 
   retakePhoto() {
-    this.isCapturing = false;
-    
-    // Show video and overlay again
-    this.postCaptureControls.classList.add('hidden');
-    this.captureBtn.classList.remove('hidden');
+    this.cameraFeed.style.display = 'block';
+    this.overlayCanvas.classList.remove('hidden');
     this.canvas.classList.add('hidden');
-    this.video.style.display = 'block';
-    this.overlayCanvas.style.display = 'block';
-    
-    this.updateStatus('Position your face in the center');
+    this.captureBtn.style.display = 'block';
+    this.postCaptureControls.classList.add('hidden');
+    this.isCaptured = false;
   }
 
-  async analyzeImage() {
+  async analyzePhoto() {
+    this.loading.classList.remove('hidden');
+    this.statusMessage.textContent = 'Analyzing your colors...';
+
     try {
-      this.loadingIndicator.classList.remove('hidden');
-      this.updateStatus('Analyzing your colors...');
-      
-      if (!this.imageData) {
-        throw new Error('No image data available');
-      }
-      
-      const response = await fetch('https://api.thecolorcapsule.com/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ imageData: this.imageData })
-      });
+      // Get the image data from canvas
+      const imageData = this.canvas.toDataURL('image/jpeg');
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      // Store the image data in localStorage
+      localStorage.setItem('colorAnalysisImage', imageData);
 
-      const result = await response.json();
-      
-      if (!result || result.status !== "success" || !result.data) {
-        throw new Error('Invalid analysis result structure');
-      }
-
-      // Store result in localStorage
-      localStorage.setItem('colorAnalysisResult', JSON.stringify(result.data));
-      
-      // Show success message and redirect to results page
-      this.updateStatus('Analysis complete! Redirecting to results...');
-      setTimeout(() => {
-        window.location.href = '/pages/color-analysis-results';
-      }, 1500);
-
+      // Redirect to results page
+      window.location.href = '/pages/color-analysis-results';
     } catch (error) {
-      console.error('Analysis error:', error);
-      this.updateStatus('Error during analysis: ' + error.message);
-    } finally {
-      this.loadingIndicator.classList.add('hidden');
+      console.error('Error analyzing photo:', error);
+      this.statusMessage.textContent = 'Error analyzing photo. Please try again.';
+      this.loading.classList.add('hidden');
     }
   }
 
-  updateStatus(message) {
-    if (this.statusMessage) {
-      this.statusMessage.textContent = message;
-    }
-  }
-
-  closeModal() {
-    if (this.stream) {
-      this.stream.getTracks().forEach(track => track.stop());
-    }
-    this.modal.style.display = 'none';
-    this.isCapturing = false;
-    
-    // Reset UI elements
-    this.video.style.display = 'block';
-    this.overlayCanvas.style.display = 'block';
-    this.canvas.classList.add('hidden');
-    this.postCaptureControls.classList.add('hidden');
-    this.captureBtn.classList.remove('hidden');
-    
-    if (this.overlayCtx) {
-      this.overlayCtx.clearRect(0, 0, this.overlayCanvas.width, this.overlayCanvas.height);
-    }
+  startFaceDetection() {
+    // This is a placeholder for face detection logic
+    // You would typically use a face detection library here
+    // For now, we'll just show a message
+    this.statusMessage.textContent = 'Position your face in the center';
   }
 }
 
-// Initialize when DOM is loaded
+// Initialize the color analysis functionality
 document.addEventListener('DOMContentLoaded', () => {
-  new ColorAnalysis();
-});
+  const colorAnalysis = new ColorAnalysis();
 
-document.addEventListener('DOMContentLoaded', function() {
-  const colorAnalysisTrigger = document.getElementById('color-analysis-trigger');
-  if (colorAnalysisTrigger) {
-    colorAnalysisTrigger.addEventListener('click', function() {
-      // Show the color analysis modal
-      const modal = document.getElementById('color-analysis-modal');
-      if (modal) {
-        modal.classList.add('active');
-        document.body.classList.add('color-analysis-modal-open');
-      }
-    });
+  // Add click handler for the color analysis trigger button
+  const triggerBtn = document.getElementById('color-analysis-trigger');
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', () => colorAnalysis.openCamera());
   }
-}); 
+});
