@@ -69,19 +69,6 @@
           </div>
         </div>
       </div>
-
-      <div class="color-results__actions">
-        {%- if customer == blank -%}
-          <button
-            type="button"
-            class="button button--primary"
-            id="login-cta"
-            aria-label="{{ 'customer.login_page.title' | t }}"
-          >
-            {{ 'customer.login_page.title' | t }}
-          </button>
-        {%- endif -%}
-      </div>
     </div>
   </div>
 </div>
@@ -120,15 +107,6 @@
       saveButton.addEventListener('click', () => {
         // This will be implemented in Phase 2
         console.log('Save results clicked');
-      });
-    }
-
-    const loginCta = document.getElementById('login-cta');
-    const loginModal = document.getElementById('login-modal');
-
-    if (loginCta && loginModal) {
-      loginCta.addEventListener('click', function () {
-        loginModal.style.display = 'flex';
       });
     }
   });

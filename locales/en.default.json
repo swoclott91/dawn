@@ -500,9 +500,6 @@
       "password": "Password",
       "password_confirm": "Confirm password",
       "submit": "Reset password"
-    },
-    "login_page": {
-      "title": "Login"
     }
   },
   "gift_cards": {
