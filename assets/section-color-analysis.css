@@ -1,0 +1,350 @@
+.color-analysis {
+    margin: var(--spacing-sections-mobile) auto;
+    max-width: var(--page-width);
+    padding: 0 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+    .color-analysis {
+        margin: var(--spacing-sections-desktop) auto;
+        padding: 0 5rem;
+    }
+}
+
+/* Banner styles */
+.banner.color-analysis {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+.banner.color-analysis.banner--small {
+    min-height: 28rem;
+}
+
+.banner.color-analysis.banner--medium {
+    min-height: 45rem;
+}
+
+.banner.color-analysis.banner--large {
+    min-height: 65rem;
+}
+
+.banner.color-analysis.banner--adapt {
+    height: auto;
+}
+
+@media screen and (max-width: 749px) {
+    .banner.color-analysis.banner--small {
+        min-height: 28rem;
+    }
+
+    .banner.color-analysis.banner--medium {
+        min-height: 34rem;
+    }
+
+    .banner.color-analysis.banner--large {
+        min-height: 39rem;
+    }
+
+    .banner.color-analysis.banner--adapt {
+        height: auto;
+    }
+}
+
+/* Content positioning */
+.banner.color-analysis .banner__content {
+    padding: 0;
+    display: flex;
+    position: relative;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.banner.color-analysis .banner__content--top-left {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.banner.color-analysis .banner__content--top-center {
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.banner.color-analysis .banner__content--top-right {
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.banner.color-analysis .banner__content--middle-left {
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.banner.color-analysis .banner__content--middle-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.banner.color-analysis .banner__content--middle-right {
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.banner.color-analysis .banner__content--bottom-left {
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.banner.color-analysis .banner__content--bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.banner.color-analysis .banner__content--bottom-right {
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.banner.color-analysis .banner__box {
+    padding: 4rem 3.5rem;
+    position: relative;
+    border-radius: var(--text-boxes-radius);
+    background: rgb(var(--color-background));
+}
+
+.banner.color-analysis.banner--desktop-transparent .banner__box {
+    background: transparent;
+    --color-button: var(--color-base-accent-2);
+    --color-button-text: var(--color-base-solid-button-labels);
+    --alpha-button-background: 1;
+}
+
+@media screen and (max-width: 749px) {
+    .banner.color-analysis.banner--mobile-bottom .banner__box {
+        background: transparent;
+    }
+}
+
+/* Original color analysis styles */
+.color-analysis__title {
+    margin-bottom: 1.5rem;
+    color: rgb(var(--color-foreground));
+}
+
+.color-analysis__description {
+    margin-bottom: 2rem;
+    font-size: 1.6rem;
+    line-height: calc(1 + 0.5 / var(--font-body-scale));
+    color: rgba(var(--color-foreground), 0.75);
+}
+
+.color-analysis__button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    background-color: var(--gradient-base-accent-1);
+    color: rgb(var(--color-button-text));
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.color-analysis__button:hover {
+    opacity: 0.9;
+}
+
+/* Modal styles */
+.color-analysis__modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgb(var(--color-foreground));
+    z-index: 1000;
+}
+
+.color-analysis__modal.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Camera viewport */
+.camera-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(var(--color-foreground));
+}
+
+/* Video and canvas elements */
+#camera-feed,
+#overlay-canvas,
+#canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Analysis Results */
+#analysis-results {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 50rem;
+    z-index: 1001;
+}
+
+.analysis-results {
+    background: rgb(var(--color-background));
+    padding: var(--grid-desktop-vertical-spacing);
+    border-radius: var(--popup-corner-radius);
+    border: var(--popup-border-width) solid rgba(var(--color-foreground), var(--popup-border-opacity));
+    box-shadow: var(--popup-shadow-horizontal-offset) var(--popup-shadow-vertical-offset) var(--popup-shadow-blur-radius) rgba(var(--color-shadow), var(--popup-shadow-opacity));
+}
+
+.analysis-results h3 {
+    margin: 0 0 var(--grid-desktop-vertical-spacing);
+    text-align: center;
+}
+
+.season-result {
+    margin-bottom: var(--grid-desktop-vertical-spacing);
+    padding-bottom: var(--grid-desktop-vertical-spacing);
+    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.characteristics {
+    margin-top: var(--grid-desktop-vertical-spacing);
+}
+
+.characteristics p {
+    margin: 0.5rem 0;
+    color: rgba(var(--color-foreground), 0.75);
+}
+
+/* Controls */
+.controls,
+.post-capture-controls {
+    position: fixed;
+    bottom: max(env(safe-area-inset-bottom, 5vh), 5vh);
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    z-index: 1001;
+}
+
+/* Capture button */
+.capture-btn {
+    width: 7.2rem;
+    height: 7.2rem;
+    border-radius: 50%;
+    background: rgba(var(--color-background), 0.2);
+    border: 0.3rem solid rgba(var(--color-background), 0.9);
+    cursor: pointer;
+    transition: transform var(--duration-short) ease;
+}
+
+.capture-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Status message */
+.status-message {
+    position: fixed;
+    bottom: calc(max(env(safe-area-inset-bottom, 5vh), 5vh) + 10rem);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(var(--color-foreground), 0.7);
+    color: rgb(var(--color-background));
+    padding: 1.2rem 2.4rem;
+    border-radius: var(--buttons-radius);
+    font-size: 1.6rem;
+    z-index: 1001;
+    white-space: nowrap;
+    max-width: 90%;
+    text-align: center;
+}
+
+/* Close button */
+.close-btn {
+    position: fixed;
+    top: max(env(safe-area-inset-top, 2rem), 2rem);
+    right: 2rem;
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 50%;
+    background: rgba(var(--color-foreground), 0.5);
+    border: 0.2rem solid rgba(var(--color-background), 0.8);
+    color: rgb(var(--color-background));
+    font-size: 2.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
+    padding: 0;
+    transition: transform var(--duration-short) ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+/* Mobile optimizations */
+@media screen and (max-width: 749px) {
+    .analysis-results {
+        padding: var(--grid-mobile-vertical-spacing);
+    }
+
+    .capture-btn {
+        width: 6.4rem;
+        height: 6.4rem;
+    }
+
+    .status-message {
+        font-size: 1.4rem;
+        padding: 1rem 2rem;
+    }
+}
+
+/* Orientation specific styles */
+@media screen and (orientation: portrait) {
+    #camera-feed {
+        object-fit: cover;
+    }
+}
+
+@media screen and (orientation: landscape) {
+    #camera-feed {
+        object-fit: contain;
+    }
+}
+
+/* Safe area insets for modern mobile browsers */
+@supports (padding: max(0px)) {
+
+    .controls,
+    .post-capture-controls {
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* Add other styles from your existing implementation */
