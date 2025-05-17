@@ -1,0 +1,74 @@
+{%- style -%}
+  .login-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-foreground), 0.5);
+    z-index: 999999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-modal.active {
+    display: flex;
+  }
+
+  .login-modal__content {
+    background: rgb(var(--color-background));
+    padding: 3rem;
+    border-radius: var(--buttons-radius);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    margin: 1rem;
+    box-shadow: 0 2px 10px rgba(var(--color-foreground), 0.1);
+  }
+
+  .login-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgb(var(--color-foreground));
+    z-index: 1;
+  }
+
+  .login-modal__close:hover {
+    color: rgba(var(--color-foreground), 0.75);
+  }
+
+  .login-modal__iframe {
+    width: 100%;
+    height: 400px;
+    border: none;
+  }
+
+  /* Hide modal in theme editor */
+  .shopify-design-mode .login-modal {
+    display: none !important;
+  }
+{%- endstyle -%}
+
+{% unless request.design_mode %}
+  <div id="login-modal" class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+    <div class="login-modal__content">
+      <button type="button" class="login-modal__close" aria-label="{{ 'accessibility.close' | t }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <h2 id="login-modal-title" class="h3">{{ 'customer.login_page.title' | t }}</h2>
+      <iframe
+        class="login-modal__iframe"
+        src="{{ routes.account_login_url }}?return_to={{ routes.root_url }}pages/color-analysis-results"
+        title="{{ 'customer.login_page.title' | t }}"
+      ></iframe>
+    </div>
+  </div>
+{% endunless %}
