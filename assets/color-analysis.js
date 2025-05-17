@@ -121,14 +121,42 @@ class ColorAnalysis {
       // Get the image data from canvas
       const imageData = this.canvas.toDataURL('image/jpeg');
 
-      // Store the image data in localStorage
-      localStorage.setItem('colorAnalysisImage', imageData);
+      // Make the API call
+      const response = await fetch('https://api.thecolorcapsule.com/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ imageData }),
+      });
 
-      // Redirect to results page
-      window.location.href = '/pages/color-analysis-results';
+      const result = await response.json();
+
+      if (!result || result.status !== 'success' || !result.data) {
+        throw new Error('Invalid analysis result structure');
+      }
+
+      // Store the full results in localStorage
+      localStorage.setItem('colorAnalysisResult', JSON.stringify(result.data));
+
+      // Show the season in the modal
+      this.statusMessage.textContent = `Your Season: ${result.data.season}`;
+
+      // Change the analyze button to "View Full Analysis"
+      this.analyzeBtn.innerHTML = `
+        <span>View Full Analysis</span>
+      `;
+
+      // Update the click handler to redirect to results page
+      this.analyzeBtn.removeEventListener('click', this.analyzePhoto);
+      this.analyzeBtn.addEventListener('click', () => {
+        window.location.href = '/pages/color-analysis-results';
+      });
     } catch (error) {
       console.error('Error analyzing photo:', error);
       this.statusMessage.textContent = 'Error analyzing photo. Please try again.';
+    } finally {
       this.loading.classList.add('hidden');
     }
   }
