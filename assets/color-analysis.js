@@ -188,4 +188,18 @@ class ColorAnalysis {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   new ColorAnalysis();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const colorAnalysisTrigger = document.getElementById('color-analysis-trigger');
+  if (colorAnalysisTrigger) {
+    colorAnalysisTrigger.addEventListener('click', function() {
+      // Show the color analysis modal
+      const modal = document.getElementById('color-analysis-modal');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.classList.add('color-analysis-modal-open');
+      }
+    });
+  }
 }); 

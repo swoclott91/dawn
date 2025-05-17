@@ -1,0 +1,30 @@
+.header__icon--color-analysis {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    color: rgb(var(--color-foreground));
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.header__icon--color-analysis:hover {
+    color: rgb(var(--color-foreground), 0.75);
+}
+
+.header__icon--color-analysis .svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.header__icon--color-analysis svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: currentColor;
+}
