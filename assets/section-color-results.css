@@ -9,93 +9,119 @@
 
 .color-results__header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 
 .color-results__title {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
-.color-results__save-cta {
-    background: #f5f5f5;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-top: 1rem;
+.color-results__content {
+    display: grid;
+    gap: 4rem;
+}
+
+.color-results__season {
+    text-align: center;
 }
 
 .season-display {
-    text-align: center;
-    margin: 2rem 0;
-}
-
-.season-name {
-    font-size: 2.5rem;
+    margin-top: 2rem;
+    font-size: 2.4rem;
     font-weight: bold;
-    display: block;
-    margin-bottom: 0.5rem;
 }
 
 .season-confidence {
-    font-size: 1rem;
-    color: #666;
+    display: block;
+    font-size: 1.6rem;
+    font-weight: normal;
+    margin-top: 1rem;
+    opacity: 0.8;
+}
+
+.color-results__traits {
+    text-align: center;
 }
 
 .traits-container {
-    margin: 2rem 0;
+    margin-top: 2rem;
+    display: grid;
+    gap: 2rem;
 }
 
 .trait {
-    margin-bottom: 1.5rem;
+    display: grid;
+    gap: 1rem;
 }
 
 .trait-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .trait-bar {
-    height: 8px;
-    background: #eee;
-    border-radius: 4px;
+    height: 2rem;
+    background: rgba(var(--color-foreground), 0.1);
+    border-radius: var(--buttons-radius);
     overflow: hidden;
 }
 
 .trait-fill {
     height: 100%;
-    background: #4caf50;
-    width: 0;
-    transition: width 1s ease-out;
+    background: rgb(var(--color-button));
+    transition: width 0.3s ease;
 }
 
 .trait-value {
-    display: block;
-    text-align: right;
-    font-size: 0.875rem;
-    color: #666;
-    margin-top: 0.25rem;
+    font-size: 1.4rem;
+    opacity: 0.8;
 }
 
-.swatches-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-}
-
-.swatch {
+.color-results__swatches {
     text-align: center;
 }
 
+.swatches-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+}
+
+.swatch {
+    display: grid;
+    gap: 1rem;
+}
+
 .swatch-color {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 0 auto 0.5rem;
-    border: 1px solid #ddd;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--buttons-radius);
+    border: 1px solid rgba(var(--color-foreground), 0.1);
 }
 
 .swatch-label {
-    font-size: 0.875rem;
-    color: #666;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 749px) {
+    .color-results {
+        padding: 2rem 0;
+    }
+
+    .color-results__header {
+        margin-bottom: 2rem;
+    }
+
+    .color-results__content {
+        gap: 2rem;
+    }
+
+    .season-display {
+        font-size: 2rem;
+    }
+
+    .swatches-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

@@ -52,7 +52,7 @@
           <button
             type="button"
             class="save-results__button"
-            onclick="document.getElementById('login-modal').classList.add('active'); document.body.classList.add('login-modal-open');"
+            id="save-results-button"
           >
             {{ 'sections.color_results.save_results' | t }}
           </button>
@@ -151,11 +151,14 @@
     });
 
     // Handle save results button
-    const saveButton = document.querySelector('[data-save-results]');
+    const saveButton = document.getElementById('save-results-button');
     if (saveButton) {
       saveButton.addEventListener('click', () => {
-        // This will be implemented in Phase 2
-        console.log('Save results clicked');
+        const loginModal = document.getElementById('login-modal');
+        if (loginModal) {
+          loginModal.classList.add('active');
+          document.body.classList.add('login-modal-open');
+        }
       });
     }
   });
