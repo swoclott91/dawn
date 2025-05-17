@@ -270,9 +270,9 @@
           <span class="visually-hidden">
             {%- liquid
               if customer
-                echo 'customer.account_fallback' | t
+                echo 'customer.account.title' | t
               else
-                echo 'customer.log_in' | t
+                echo 'customer.account.log_in' | t
               endif
             -%}
           </span>

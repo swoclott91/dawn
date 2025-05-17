@@ -1,4 +1,132 @@
 {%- style -%}
+  .color-results {
+    padding: 4rem 0;
+  }
+
+  .color-results__container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .color-results__header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .color-results__title {
+    margin-bottom: 2rem;
+  }
+
+  .color-results__content {
+    display: grid;
+    gap: 4rem;
+  }
+
+  .color-results__season {
+    text-align: center;
+  }
+
+  .season-display {
+    margin-top: 2rem;
+    font-size: 2.4rem;
+    font-weight: bold;
+  }
+
+  .season-confidence {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: normal;
+    margin-top: 1rem;
+    opacity: 0.8;
+  }
+
+  .color-results__traits {
+    text-align: center;
+  }
+
+  .traits-container {
+    margin-top: 2rem;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .trait {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .trait-label {
+    font-weight: bold;
+  }
+
+  .trait-bar {
+    height: 2rem;
+    background: rgba(var(--color-foreground), 0.1);
+    border-radius: var(--buttons-radius);
+    overflow: hidden;
+  }
+
+  .trait-fill {
+    height: 100%;
+    background: rgb(var(--color-button));
+    transition: width 0.3s ease;
+  }
+
+  .trait-value {
+    font-size: 1.4rem;
+    opacity: 0.8;
+  }
+
+  .color-results__swatches {
+    text-align: center;
+  }
+
+  .swatches-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+  }
+
+  .swatch {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .swatch-color {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--buttons-radius);
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+  }
+
+  .swatch-label {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
+  @media screen and (max-width: 749px) {
+    .color-results {
+      padding: 2rem 0;
+    }
+
+    .color-results__header {
+      margin-bottom: 2rem;
+    }
+
+    .color-results__content {
+      gap: 2rem;
+    }
+
+    .season-display {
+      font-size: 2rem;
+    }
+
+    .swatches-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   .save-results {
     margin-top: 2rem;
     text-align: center;
