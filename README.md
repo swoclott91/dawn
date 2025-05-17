@@ -1,3 +1,134 @@
+📄 README.md — Color Capsule Custom Theme (Based on Dawn)
+markdown
+Copy
+Edit
+# Color Capsule Shopify Theme
+
+This repository is a private fork of Shopify’s [Dawn theme](https://github.com/Shopify/dawn), customized to support our AI-powered seasonal color analysis flow.
+
+> 🔁 This fork **tracks Dawn updates** via the official `Shopify/dawn` repository as the `upstream` remote.
+
+---
+
+## 📁 Branch Structure
+
+| Branch                    | Purpose                                            |
+|---------------------------|----------------------------------------------------|
+| `main`                    | Clean working branch based on Dawn                |
+| `color-analysis-feature`  | All feature work for AI-based analysis flow        |
+
+We develop in `color-analysis-feature` and merge into `main` when ready to deploy or test.
+
+---
+
+## 🎯 Workflow: Color Analysis Feature
+
+This feature introduces:
+
+- A site-wide webcam analysis modal
+- API connection to Flask backend for image analysis
+- `localStorage`-driven results rendering on `/pages/color-analysis-results`
+- Seamless metafield syncing after Shopify login
+
+🛠 All files are isolated to custom:
+- `sections/color-results.liquid`
+- `snippets/color-analysis-modal.liquid`
+- `assets/color-analysis.js`, `login-handler.js`
+
+---
+
+## 🔀 Keeping Up with Dawn Updates
+
+This repo is forked from Shopify's `dawn` and tracks it via a remote called `upstream`.
+
+### ✅ Setup (already done):
+```bash
+git remote add upstream https://github.com/Shopify/dawn.git
+🔄 To Pull the Latest Dawn Updates:
+Checkout the main branch:
+
+bash
+Copy
+Edit
+git checkout main
+Fetch and merge Shopify’s latest:
+
+bash
+Copy
+Edit
+git fetch upstream
+git merge upstream/main
+Resolve conflicts (if any) and test
+
+Rebase your feature branch:
+
+bash
+Copy
+Edit
+git checkout color-analysis-feature
+git rebase main
+🎯 This keeps your feature work aligned with new theme improvements.
+
+🖥 GitHub Desktop Quick Steps
+Pull in Shopify Updates:
+Go to main branch
+
+Repository → Fetch origin (also fetches upstream)
+
+Branch → Choose a branch to merge into main → select upstream/main
+
+Start a New Feature:
+Branch → New Branch → name it (e.g. header-improvements)
+
+Work and commit → Merge into main or PR for review
+
+🚀 Deploy with Shopify CLI
+To preview or push the theme:
+
+bash
+Copy
+Edit
+shopify login --store your-store.myshopify.com
+shopify theme dev
+When ready:
+
+bash
+Copy
+Edit
+shopify theme push
+📚 References
+Dawn Theme Repo
+
+Shopify Theme Docs
+
+Storefront API Metafield Docs
+
+🤝 Contributors
+Shane Wolcott (Lead)
+
+Claude (AI Assistant)
+
+ChatGPT (Workflow + architecture scaffolding)
+
+📌 Notes
+This repo intentionally avoids Flask backend storage; all results are stored client-side and synced to Shopify via the Storefront API after login.
+
+Please commit new features to feature branches, not directly to main.
+
+yaml
+Copy
+Edit
+
+---
+
+Would you like me to:
+- Auto-generate this as a file and upload it?
+- Create `.gitignore`, `theme-check.yml`, or `.github/workflows` next?
+
+You're now versioned, tracked, and documented 🔧📘
+
+
+
 # Dawn
 
 [![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
