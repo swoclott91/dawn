@@ -1,13 +1,62 @@
 {{ 'section-color-results.css' | asset_url | stylesheet_tag }}
 
+{%- style -%}
+  .save-results {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .save-results__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    border: none;
+    border-radius: var(--buttons-radius);
+    cursor: pointer;
+    font-size: 1.6rem;
+    transition: opacity 0.2s ease;
+  }
+
+  .save-results__button:hover {
+    opacity: 0.8;
+  }
+
+  .sync-status {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: var(--buttons-radius);
+    text-align: center;
+  }
+
+  .sync-status--success {
+    background: rgba(0, 128, 0, 0.1);
+    color: rgb(0, 128, 0);
+  }
+
+  .sync-status--error {
+    background: rgba(255, 0, 0, 0.1);
+    color: rgb(255, 0, 0);
+  }
+{%- endstyle -%}
+
 <div class="color-results page-width">
   <div class="color-results__container">
     <div class="color-results__header">
       <h1 class="color-results__title">Your Color Analysis Results</h1>
       {% unless customer %}
-        <div class="color-results__save-cta">
-          <p>Want to save your results for later?</p>
-          <button class="button button--primary" data-save-results>Save My Results</button>
+        <div class="save-results">
+          <button
+            type="button"
+            class="save-results__button"
+            onclick="document.getElementById('login-modal').classList.add('active'); document.body.classList.add('login-modal-open');"
+          >
+            {{ 'sections.color_results.save_results' | t }}
+          </button>
+          <div id="sync-status" class="sync-status"></div>
         </div>
       {% endunless %}
     </div>

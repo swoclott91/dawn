@@ -381,6 +381,15 @@
       "min_error": "This item has a minimum of {{ min }}",
       "max_error": "This item has a maximum of {{ max }}",
       "step_error": "You can only add this item in increments of {{ step }}"
+    },
+    "color_results": {
+      "name": "Color Analysis Results",
+      "save_results": "Save My Results",
+      "settings": {
+        "title": {
+          "label": "Title"
+        }
+      }
     }
   },
   "localization": {
