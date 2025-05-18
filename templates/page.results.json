@@ -15,9 +15,28 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "color_results_LFy8QP": {
+      "type": "color-results",
+      "name": "Color Results",
+      "settings": {
+        "title": "Your Color Analysis Results",
+        "save_button_text": "Save Results",
+        "season_title": "Your Season",
+        "traits_title": "Your Color Traits",
+        "swatches_title": "Your Colors",
+        "temperature_label": "Temperature",
+        "depth_label": "Depth",
+        "clarity_label": "Clarity",
+        "skin_label": "Skin",
+        "hair_label": "Hair",
+        "eyes_label": "Eyes",
+        "lips_label": "Lips"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "color_results_LFy8QP"
   ]
 }
