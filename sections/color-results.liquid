@@ -60,6 +60,8 @@
   }
 
   .trait-bar {
+    width: 100%;
+    min-width: 200px;
     height: 2.6rem;
     background: #e5e5e5;
     border-radius: var(--buttons-radius);
@@ -95,10 +97,13 @@
   }
 
   .swatch-color {
-    width: 100%;
-    aspect-ratio: 1;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
     border-radius: var(--buttons-radius);
     border: 1px solid rgba(var(--color-foreground), 0.1);
+    margin: 0 auto;
   }
 
   .swatch-label {
@@ -109,6 +114,7 @@
   .trait-indicator {
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2;
+    pointer-events: none;
   }
 
   @media screen and (max-width: 749px) {
@@ -319,13 +325,12 @@
       const tempIndicator = document.querySelector('[data-trait="temperature"]');
       if (tempIndicator) {
         tempIndicator.style.left = `calc(${tempPercent}% )`;
+        tempIndicator.style.border = '3px solid #fff';
+        tempIndicator.style.boxShadow = '0 0 0 2px #222';
         tempIndicator.style.background = '#222';
         tempIndicator.style.width = '2.2rem';
         tempIndicator.style.height = '2.2rem';
-        tempIndicator.style.borderRadius = '50%';
-        tempIndicator.style.transform = 'translate(-50%, -50%)';
-        tempIndicator.style.border = '3px solid #fff';
-        tempIndicator.style.boxShadow = '0 0 0 2px #222';
+        tempIndicator.style.display = 'block';
       }
 
       // Depth: 0 (left) to 1 (right)
@@ -363,6 +368,7 @@
         const swatch = document.querySelector(`[data-color="${color}"]`);
         if (swatch) {
           swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
+          swatch.style.border = '2px solid #222'; // debug
         }
       });
 
