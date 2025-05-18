@@ -306,50 +306,29 @@
       document.querySelector('.season-name').textContent = data.season;
       document.querySelector('.season-confidence').textContent = `Confidence: ${(data.confidence * 100).toFixed(1)}%`;
 
-      // Display traits as indicator circles
-      // Temperature: -1 (left) to 1 (right), 0 is center
-      const temp = data.traits.temperature;
-      const tempPercent = ((temp + 1) / 2) * 100;
-      const tempIndicator = document.querySelector('[data-trait="temperature"]');
-      if (tempIndicator) {
-        tempIndicator.style.left = `calc(${tempPercent}% )`;
-        tempIndicator.style.border = '3px solid #fff';
-        tempIndicator.style.boxShadow = '0 0 0 2px #222';
-        tempIndicator.style.background = '#222';
-        tempIndicator.style.width = '2.2rem';
-        tempIndicator.style.height = '2.2rem';
-        tempIndicator.style.display = 'block';
-      }
+      const traits = data.traits;
 
-      // Depth: 0 (left) to 1 (right)
-      const depth = data.traits.depth;
-      const depthPercent = depth * 100;
-      const depthIndicator = document.querySelector('[data-trait="depth"]');
-      if (depthIndicator) {
-        depthIndicator.style.left = `calc(${depthPercent}% )`;
-        depthIndicator.style.background = '#222';
-        depthIndicator.style.width = '2.2rem';
-        depthIndicator.style.height = '2.2rem';
-        depthIndicator.style.borderRadius = '50%';
-        depthIndicator.style.transform = 'translate(-50%, -50%)';
-        depthIndicator.style.border = '3px solid #fff';
-        depthIndicator.style.boxShadow = '0 0 0 2px #222';
-      }
-
-      // Clarity: 0 (left) to 1 (right)
-      const clarity = data.traits.clarity;
-      const clarityPercent = clarity * 100;
-      const clarityIndicator = document.querySelector('[data-trait="clarity"]');
-      if (clarityIndicator) {
-        clarityIndicator.style.left = `calc(${clarityPercent}% )`;
-        clarityIndicator.style.background = '#222';
-        clarityIndicator.style.width = '2.2rem';
-        clarityIndicator.style.height = '2.2rem';
-        clarityIndicator.style.borderRadius = '50%';
-        clarityIndicator.style.transform = 'translate(-50%, -50%)';
-        clarityIndicator.style.border = '3px solid #fff';
-        clarityIndicator.style.boxShadow = '0 0 0 2px #222';
-      }
+      // For each trait, update the correct indicator
+      ['temperature', 'depth', 'clarity'].forEach((trait) => {
+        const indicator = document.querySelector(`.trait-indicator[data-trait="${trait}"]`);
+        if (indicator) {
+          let percent;
+          if (trait === 'temperature') {
+            percent = ((traits.temperature + 1) / 2) * 100; // -1 to 1 mapped to 0-100
+          } else {
+            percent = traits[trait] * 100; // 0-1 mapped to 0-100
+          }
+          indicator.style.left = `calc(${percent}% )`;
+          indicator.style.background = '#222';
+          indicator.style.width = '2.2rem';
+          indicator.style.height = '2.2rem';
+          indicator.style.borderRadius = '50%';
+          indicator.style.transform = 'translate(-50%, -50%)';
+          indicator.style.border = '3px solid #fff';
+          indicator.style.boxShadow = '0 0 0 2px #222';
+          indicator.style.display = 'block';
+        }
+      });
 
       // Display color swatches
       Object.entries(data.colors).forEach(([color, rgb]) => {
