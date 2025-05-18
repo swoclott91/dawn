@@ -172,7 +172,7 @@
 <div class="color-results page-width">
   <div class="color-results__container">
     <div class="color-results__header">
-      <h1 class="color-results__title">Your Color Analysis Results</h1>
+      <h1 class="color-results__title">{{ section.settings.title }}</h1>
       {% unless customer %}
         <div class="save-results">
           <button
@@ -180,7 +180,7 @@
             class="save-results__button"
             id="save-results-button"
           >
-            {{ 'sections.color_results.save_results' | t }}
+            {{ section.settings.save_button_text }}
           </button>
           <div id="sync-status" class="sync-status"></div>
         </div>
@@ -189,7 +189,7 @@
 
     <div class="color-results__content">
       <div class="color-results__season">
-        <h2>Your Season</h2>
+        <h2>{{ section.settings.season_title }}</h2>
         <div class="season-display" id="season-display">
           <span class="season-name">Loading...</span>
           <span class="season-confidence"></span>
@@ -197,24 +197,24 @@
       </div>
 
       <div class="color-results__traits">
-        <h2>Your Color Traits</h2>
+        <h2>{{ section.settings.traits_title }}</h2>
         <div class="traits-container">
           <div class="trait">
-            <span class="trait-label">Temperature</span>
+            <span class="trait-label">{{ section.settings.temperature_label }}</span>
             <div class="trait-bar">
               <div class="trait-fill" data-trait="temperature"></div>
             </div>
             <span class="trait-value"></span>
           </div>
           <div class="trait">
-            <span class="trait-label">Depth</span>
+            <span class="trait-label">{{ section.settings.depth_label }}</span>
             <div class="trait-bar">
               <div class="trait-fill" data-trait="depth"></div>
             </div>
             <span class="trait-value"></span>
           </div>
           <div class="trait">
-            <span class="trait-label">Clarity</span>
+            <span class="trait-label">{{ section.settings.clarity_label }}</span>
             <div class="trait-bar">
               <div class="trait-fill" data-trait="clarity"></div>
             </div>
@@ -224,23 +224,23 @@
       </div>
 
       <div class="color-results__swatches">
-        <h2>Your Colors</h2>
+        <h2>{{ section.settings.swatches_title }}</h2>
         <div class="swatches-container">
           <div class="swatch">
             <div class="swatch-color" data-color="skin"></div>
-            <span class="swatch-label">Skin</span>
+            <span class="swatch-label">{{ section.settings.skin_label }}</span>
           </div>
           <div class="swatch">
             <div class="swatch-color" data-color="hair"></div>
-            <span class="swatch-label">Hair</span>
+            <span class="swatch-label">{{ section.settings.hair_label }}</span>
           </div>
           <div class="swatch">
             <div class="swatch-color" data-color="iris"></div>
-            <span class="swatch-label">Eyes</span>
+            <span class="swatch-label">{{ section.settings.eyes_label }}</span>
           </div>
           <div class="swatch">
             <div class="swatch-color" data-color="lips"></div>
-            <span class="swatch-label">Lips</span>
+            <span class="swatch-label">{{ section.settings.lips_label }}</span>
           </div>
         </div>
       </div>
@@ -295,6 +295,85 @@
   "name": "Color Results",
   "tag": "section",
   "class": "section",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Your Color Analysis Results"
+    },
+    {
+      "type": "text",
+      "id": "save_button_text",
+      "label": "Save Results Button Text",
+      "default": "Save Results"
+    },
+    {
+      "type": "text",
+      "id": "season_title",
+      "label": "Season Title",
+      "default": "Your Season"
+    },
+    {
+      "type": "text",
+      "id": "traits_title",
+      "label": "Traits Title",
+      "default": "Your Color Traits"
+    },
+    {
+      "type": "text",
+      "id": "swatches_title",
+      "label": "Swatches Title",
+      "default": "Your Colors"
+    },
+    {
+      "type": "text",
+      "id": "temperature_label",
+      "label": "Temperature Label",
+      "default": "Temperature"
+    },
+    {
+      "type": "text",
+      "id": "depth_label",
+      "label": "Depth Label",
+      "default": "Depth"
+    },
+    {
+      "type": "text",
+      "id": "clarity_label",
+      "label": "Clarity Label",
+      "default": "Clarity"
+    },
+    {
+      "type": "text",
+      "id": "skin_label",
+      "label": "Skin Label",
+      "default": "Skin"
+    },
+    {
+      "type": "text",
+      "id": "hair_label",
+      "label": "Hair Label",
+      "default": "Hair"
+    },
+    {
+      "type": "text",
+      "id": "eyes_label",
+      "label": "Eyes Label",
+      "default": "Eyes"
+    },
+    {
+      "type": "text",
+      "id": "lips_label",
+      "label": "Lips Label",
+      "default": "Lips"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Color Results",
+      "category": "Color Analysis"
+    }
+  ]
 }
 {% endschema %}
