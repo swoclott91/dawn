@@ -250,31 +250,57 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const inThemeEditor = window.Shopify && window.Shopify.designMode;
+
     const result = JSON.parse(localStorage.getItem('colorAnalysisResult'));
 
-    if (!result) {
+    if (!result && !inThemeEditor) {
       window.location.href = '/';
       return;
     }
 
-    // Display season
-    document.querySelector('.season-name').textContent = result.season;
-    document.querySelector('.season-confidence').textContent = `Confidence: ${(result.confidence * 100).toFixed(1)}%`;
+    // If in theme editor, show placeholder data
+    if (inThemeEditor && !result) {
+      // Example placeholder data
+      const placeholder = {
+        season: 'Spring',
+        confidence: 0.85,
+        traits: { temperature: 0.7, depth: 0.5, clarity: 0.8 },
+        colors: {
+          skin: [255, 224, 189],
+          hair: [120, 72, 36],
+          iris: [34, 113, 179],
+          lips: [200, 80, 100],
+        },
+      };
+      displayResults(placeholder);
+      return;
+    }
 
-    // Display traits
-    Object.entries(result.traits).forEach(([trait, value]) => {
-      const fill = document.querySelector(`[data-trait="${trait}"]`);
-      const valueDisplay = fill.parentElement.nextElementSibling;
+    if (result) {
+      displayResults(result);
+    }
 
-      fill.style.width = `${value * 100}%`;
-      valueDisplay.textContent = `${(value * 100).toFixed(1)}%`;
-    });
+    function displayResults(data) {
+      // Display season
+      document.querySelector('.season-name').textContent = data.season;
+      document.querySelector('.season-confidence').textContent = `Confidence: ${(data.confidence * 100).toFixed(1)}%`;
 
-    // Display color swatches
-    Object.entries(result.colors).forEach(([color, rgb]) => {
-      const swatch = document.querySelector(`[data-color="${color}"]`);
-      swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
-    });
+      // Display traits
+      Object.entries(data.traits).forEach(([trait, value]) => {
+        const fill = document.querySelector(`[data-trait=\"${trait}\"]`);
+        const valueDisplay = fill.parentElement.nextElementSibling;
+
+        fill.style.width = `${value * 100}%`;
+        valueDisplay.textContent = `${(value * 100).toFixed(1)}%`;
+      });
+
+      // Display color swatches
+      Object.entries(data.colors).forEach(([color, rgb]) => {
+        const swatch = document.querySelector(`[data-color=\"${color}\"]`);
+        swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
+      });
+    }
 
     // Handle save results button
     const saveButton = document.getElementById('save-results-button');
