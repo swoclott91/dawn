@@ -46,12 +46,19 @@
 
   .traits-container {
     margin-top: 2rem;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
+    align-items: center;
   }
 
   .trait {
-    display: grid;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
   }
 
@@ -61,7 +68,8 @@
 
   .trait-bar {
     width: 100%;
-    min-width: 200px;
+    max-width: 600px;
+    margin: 0 auto;
     height: 2.6rem;
     background: #e5e5e5;
     border-radius: var(--buttons-radius);
