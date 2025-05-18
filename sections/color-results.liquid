@@ -166,6 +166,7 @@
     cursor: pointer;
     font-size: 1.6rem;
     transition: opacity 0.2s ease;
+    text-decoration: none;
   }
 
   .save-results__button:hover {
@@ -197,13 +198,12 @@
       <h1 class="color-results__title">{{ section.settings.title }}</h1>
       {% unless customer %}
         <div class="save-results">
-          <button
-            type="button"
+          <a
+            href="{{ routes.account_login_url }}?return_to={{ routes.root_url }}pages/color-analysis-results"
             class="save-results__button"
-            id="save-results-button"
           >
             {{ section.settings.save_button_text }}
-          </button>
+          </a>
           <div id="sync-status" class="sync-status"></div>
         </div>
       {% endunless %}
@@ -392,18 +392,6 @@
           <li>Total: ${sampleCounts.total}</li>
         `;
       }
-    }
-
-    // Handle save results button
-    const saveButton = document.getElementById('save-results-button');
-    if (saveButton) {
-      saveButton.addEventListener('click', () => {
-        const loginModal = document.getElementById('login-modal');
-        if (loginModal) {
-          loginModal.classList.add('active');
-          document.body.classList.add('login-modal-open');
-        }
-      });
     }
   });
 </script>
