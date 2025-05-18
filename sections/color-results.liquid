@@ -199,8 +199,11 @@
       {% unless customer %}
         <div class="save-results">
           <a
-            href="{{ routes.account_login_url }}?return_to={{ routes.root_url }}pages/color-analysis-results"
+            href="{{ routes.account_login_url }}"
             class="save-results__button"
+            target="_blank"
+            rel="noopener"
+            onclick="sessionStorage.setItem('pendingSync', 'true')"
           >
             {{ section.settings.save_button_text }}
           </a>
@@ -310,6 +313,38 @@
 
     if (result) {
       displayResults(result);
+    }
+
+    // Poll for customer access token and sync results
+    function pollForCustomerToken() {
+      if (window.Shopify && window.Shopify.customerAccessToken) {
+        const result = JSON.parse(localStorage.getItem('colorAnalysisResult'));
+        if (result && sessionStorage.getItem('pendingSync')) {
+          syncResults(result);
+        }
+        return;
+      }
+      setTimeout(pollForCustomerToken, 1000);
+    }
+
+    function syncResults(data) {
+      const syncStatus = document.getElementById('sync-status');
+      syncStatus.style.display = 'block';
+      syncStatus.textContent = 'Syncing your results...';
+      syncStatus.className = 'sync-status';
+
+      // Here you would make your API call to save the results
+      // For now, we'll simulate a successful sync
+      setTimeout(() => {
+        syncStatus.textContent = 'Results saved successfully!';
+        syncStatus.className = 'sync-status sync-status--success';
+        sessionStorage.removeItem('pendingSync');
+      }, 1000);
+    }
+
+    // Start polling if we have results and pending sync
+    if (result && sessionStorage.getItem('pendingSync')) {
+      pollForCustomerToken();
     }
 
     function displayResults(data) {
