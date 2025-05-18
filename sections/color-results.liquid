@@ -75,6 +75,8 @@
     border-radius: var(--buttons-radius);
     overflow: visible;
     position: relative;
+    padding: 0 1.1rem;
+    box-sizing: border-box;
   }
 
   .trait-fill {
@@ -322,10 +324,12 @@
         if (indicator) {
           let percent;
           if (trait === 'temperature') {
-            percent = ((traits.temperature + 1) / 2) * 100; // -1 to 1 mapped to 0-100
+            percent = ((traits.temperature + 1) / 2) * 100;
           } else {
-            percent = traits[trait] * 100; // 0-1 mapped to 0-100
+            percent = traits[trait] * 100;
           }
+          // Clamp percent to [0, 100]
+          percent = Math.max(0, Math.min(percent, 100));
           indicator.style.left = `calc(${percent}% )`;
           indicator.style.background = '#222';
           indicator.style.width = '2.2rem';
