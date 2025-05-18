@@ -253,6 +253,15 @@
           </div>
         </div>
       </div>
+
+      <div class="color-results__extra">
+        <h2>Undertone</h2>
+        <div id="undertone-classification"></div>
+        <div id="undertone-confidence"></div>
+        <div id="undertone-projection"></div>
+        <h2>Sample Counts</h2>
+        <ul id="sample-counts"></ul>
+      </div>
     </div>
   </div>
 </div>
@@ -336,6 +345,31 @@
           swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
         }
       });
+
+      // Undertone
+      if (data.undertone) {
+        document.getElementById(
+          'undertone-classification'
+        ).textContent = `Classification: ${data.undertone.classification}`;
+        document.getElementById('undertone-confidence').textContent = `Confidence: ${(
+          data.undertone.confidence * 100
+        ).toFixed(1)}%`;
+        document.getElementById('undertone-projection').textContent = `Projection: ${(
+          data.undertone.projection * 100
+        ).toFixed(1)}%`;
+      }
+
+      // Sample counts
+      if (data.sample_counts) {
+        const sampleCounts = data.sample_counts;
+        document.getElementById('sample-counts').innerHTML = `
+          <li>Skin: ${sampleCounts.skin}</li>
+          <li>Hair: ${sampleCounts.hair}</li>
+          <li>Iris: ${sampleCounts.iris}</li>
+          <li>Lips: ${sampleCounts.lips}</li>
+          <li>Total: ${sampleCounts.total}</li>
+        `;
+      }
     }
 
     // Handle save results button
