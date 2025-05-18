@@ -224,18 +224,21 @@
           <div class="trait">
             <span class="trait-label">{{ section.settings.temperature_label }}</span>
             <div class="trait-bar" style="position: relative;">
+              <div class="trait-fill" data-trait="temperature"></div>
               <div class="trait-indicator" data-trait="temperature"></div>
             </div>
           </div>
           <div class="trait">
             <span class="trait-label">{{ section.settings.depth_label }}</span>
             <div class="trait-bar" style="position: relative;">
+              <div class="trait-fill" data-trait="depth"></div>
               <div class="trait-indicator" data-trait="depth"></div>
             </div>
           </div>
           <div class="trait">
             <span class="trait-label">{{ section.settings.clarity_label }}</span>
             <div class="trait-bar" style="position: relative;">
+              <div class="trait-fill" data-trait="clarity"></div>
               <div class="trait-indicator" data-trait="clarity"></div>
             </div>
           </div>
@@ -318,19 +321,29 @@
 
       const traits = data.traits;
 
-      // For each trait, update the correct indicator
+      // For each trait, update the correct indicator and fill
       ['temperature', 'depth', 'clarity'].forEach((trait) => {
         const indicator = document.querySelector(`.trait-indicator[data-trait="${trait}"]`);
-        if (indicator) {
+        const fill = document.querySelector(`.trait-fill[data-trait="${trait}"]`);
+        if (indicator && fill) {
           let percent;
           if (trait === 'temperature') {
-            percent = ((traits.temperature + 1) / 2) * 100;
+            percent = ((traits.temperature + 1) / 2) * 100; // -1 to 1 mapped to 0-100
           } else {
-            percent = traits[trait] * 100;
+            percent = traits[trait] * 100; // 0 to 1 mapped to 0-100
           }
-          // Clamp percent to [0, 100]
           percent = Math.max(0, Math.min(percent, 100));
+          fill.style.width = `${percent}%`;
+          fill.style.height = '100%';
+          fill.style.position = 'absolute';
+          fill.style.left = 0;
+          fill.style.top = 0;
+          fill.style.background = '#222';
+          fill.style.borderRadius = 'var(--buttons-radius)';
+          fill.style.zIndex = 1;
+
           indicator.style.left = `calc(${percent}% )`;
+          indicator.style.top = '50%';
           indicator.style.background = '#222';
           indicator.style.width = '2.2rem';
           indicator.style.height = '2.2rem';
@@ -339,6 +352,8 @@
           indicator.style.border = '3px solid #fff';
           indicator.style.boxShadow = '0 0 0 2px #222';
           indicator.style.display = 'block';
+          indicator.style.position = 'absolute';
+          indicator.style.zIndex = 2;
         }
       });
 
