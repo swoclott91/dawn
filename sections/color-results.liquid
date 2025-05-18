@@ -201,24 +201,33 @@
         <div class="traits-container">
           <div class="trait">
             <span class="trait-label">{{ section.settings.temperature_label }}</span>
-            <div class="trait-bar">
-              <div class="trait-fill" data-trait="temperature"></div>
+            <div class="trait-bar" style="position: relative;">
+              <div
+                class="trait-indicator"
+                data-trait="temperature"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+              ></div>
             </div>
-            <span class="trait-value"></span>
           </div>
           <div class="trait">
             <span class="trait-label">{{ section.settings.depth_label }}</span>
-            <div class="trait-bar">
-              <div class="trait-fill" data-trait="depth"></div>
+            <div class="trait-bar" style="position: relative;">
+              <div
+                class="trait-indicator"
+                data-trait="depth"
+                style="position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);"
+              ></div>
             </div>
-            <span class="trait-value"></span>
           </div>
           <div class="trait">
             <span class="trait-label">{{ section.settings.clarity_label }}</span>
-            <div class="trait-bar">
-              <div class="trait-fill" data-trait="clarity"></div>
+            <div class="trait-bar" style="position: relative;">
+              <div
+                class="trait-indicator"
+                data-trait="clarity"
+                style="position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);"
+              ></div>
             </div>
-            <span class="trait-value"></span>
           </div>
         </div>
       </div>
@@ -286,19 +295,46 @@
       document.querySelector('.season-name').textContent = data.season;
       document.querySelector('.season-confidence').textContent = `Confidence: ${(data.confidence * 100).toFixed(1)}%`;
 
-      // Display traits
-      Object.entries(data.traits).forEach(([trait, value]) => {
-        const fill = document.querySelector(`[data-trait=\"${trait}\"]`);
-        const valueDisplay = fill.parentElement.nextElementSibling;
+      // Display traits as indicator circles
+      // Temperature: -1 (left) to 1 (right), 0 is center
+      const temp = data.traits.temperature;
+      const tempPercent = ((temp + 1) / 2) * 100; // -1 to 1 mapped to 0% to 100%
+      const tempIndicator = document.querySelector('[data-trait="temperature"]');
+      tempIndicator.style.left = `calc(${tempPercent}% )`;
+      tempIndicator.style.background = '#222';
+      tempIndicator.style.width = '1.6rem';
+      tempIndicator.style.height = '1.6rem';
+      tempIndicator.style.borderRadius = '50%';
+      tempIndicator.style.transform = 'translate(-50%, -50%)';
 
-        fill.style.width = `${value * 100}%`;
-        valueDisplay.textContent = `${(value * 100).toFixed(1)}%`;
-      });
+      // Depth: 0 (left) to 1 (right)
+      const depth = data.traits.depth;
+      const depthPercent = depth * 100;
+      const depthIndicator = document.querySelector('[data-trait="depth"]');
+      depthIndicator.style.left = `calc(${depthPercent}% )`;
+      depthIndicator.style.background = '#222';
+      depthIndicator.style.width = '1.6rem';
+      depthIndicator.style.height = '1.6rem';
+      depthIndicator.style.borderRadius = '50%';
+      depthIndicator.style.transform = 'translate(-50%, -50%)';
+
+      // Clarity: 0 (left) to 1 (right)
+      const clarity = data.traits.clarity;
+      const clarityPercent = clarity * 100;
+      const clarityIndicator = document.querySelector('[data-trait="clarity"]');
+      clarityIndicator.style.left = `calc(${clarityPercent}% )`;
+      clarityIndicator.style.background = '#222';
+      clarityIndicator.style.width = '1.6rem';
+      clarityIndicator.style.height = '1.6rem';
+      clarityIndicator.style.borderRadius = '50%';
+      clarityIndicator.style.transform = 'translate(-50%, -50%)';
 
       // Display color swatches
       Object.entries(data.colors).forEach(([color, rgb]) => {
-        const swatch = document.querySelector(`[data-color=\"${color}\"]`);
-        swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
+        const swatch = document.querySelector(`[data-color="${color}"]`);
+        if (swatch) {
+          swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
+        }
       });
     }
 
