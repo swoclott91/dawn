@@ -105,12 +105,36 @@ class ColorAnalysis {
   }
 
   retakePhoto() {
-    this.cameraFeed.style.display = 'block';
-    this.overlayCanvas.classList.remove('hidden');
+    // Reset the state
+    this.isCapturing = false;
+    this.webcamRunning = true;
+
+    // Show video and overlay again
+    this.video.style.display = 'block';
+    this.overlayCanvas.style.display = 'block';
     this.canvas.classList.add('hidden');
-    this.captureBtn.style.display = 'block';
+
+    // Reset UI controls
     this.postCaptureControls.classList.add('hidden');
-    this.isCaptured = false;
+    this.captureButton.classList.remove('hidden');
+
+    // Reset analyze button
+    this.analyzeButton.innerHTML = `
+      {{- 'analyze-icon.svg' | inline_asset_content -}}
+      <span>Analyze</span>
+    `;
+
+    // Remove redirection handler and restore analyze handler
+    this.analyzeButton.removeEventListener('click', () => {
+      window.location.href = '/pages/color-analysis-results';
+    });
+    this.analyzeButton.addEventListener('click', () => this.analyzeImage());
+
+    // Update status message
+    this.updateStatus('Position your face in the center');
+
+    // Restart the prediction loop
+    this.predictWebcam();
   }
 
   async analyzePhoto() {
@@ -166,6 +190,64 @@ class ColorAnalysis {
     // You would typically use a face detection library here
     // For now, we'll just show a message
     this.statusMessage.textContent = 'Position your face in the center';
+  }
+
+  async analyzeImage() {
+    try {
+      this.loading.classList.remove('hidden');
+      this.statusMessage.textContent = 'Analyzing your colors...';
+
+      if (!this.imageData) {
+        throw new Error('No image data available');
+      }
+
+      const requestData = {
+        imageData: this.imageData,
+      };
+
+      const response = await fetch('https://api.thecolorcapsule.com/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const result = await response.json();
+
+      if (!result || result.status !== 'success' || !result.data) {
+        throw new Error('Invalid analysis result structure');
+      }
+
+      // Store the results in localStorage
+      localStorage.setItem('colorAnalysisResult', JSON.stringify(result.data));
+
+      // Update UI to show success and prepare for redirection
+      this.statusMessage.textContent = 'Analysis complete! Click "View Full Analysis" to see your results.';
+
+      // Update analyze button to show "View Full Analysis"
+      this.analyzeBtn.innerHTML = `
+        <span>View Full Analysis</span>
+      `;
+
+      // Remove old click handler and add new one for redirection
+      this.analyzeBtn.removeEventListener('click', () => this.analyzeImage());
+      this.analyzeBtn.addEventListener('click', () => {
+        window.location.href = '/pages/color-analysis-results';
+      });
+    } catch (error) {
+      this.statusMessage.textContent = 'Error during analysis: ' + error.message;
+      console.error('Analysis error:', error);
+    } finally {
+      this.loading.classList.add('hidden');
+    }
+  }
+
+  displayResults(results) {
+    // Remove the full results display from the modal
+    // Instead, just update the status message
+    this.statusMessage.textContent = 'Analysis complete! Click "View Full Analysis" to see your results.';
   }
 }
 
