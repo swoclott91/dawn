@@ -358,8 +358,10 @@
       });
 
       // Display color swatches
+      console.log('Colors:', data.colors);
       Object.entries(data.colors).forEach(([color, rgb]) => {
         const swatch = document.querySelector(`[data-color="${color}"]`);
+        console.log(`Setting color for ${color}:`, rgb, 'Found swatch:', !!swatch);
         if (swatch) {
           swatch.style.backgroundColor = `rgb(${rgb.join(',')})`;
           swatch.style.border = '2px solid #222'; // debug
