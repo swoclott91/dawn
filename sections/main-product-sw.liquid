@@ -74,7 +74,7 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <div class="page-width">
-    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }}{% if section.settings.mobile_element_order == 'info_first' %} product--mobile-info-first{% endif %} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="grid__item product__media-wrapper">
         {% render 'product-media-gallery', variant_images: variant_images %}
       </div>
@@ -356,10 +356,7 @@
                                 </dt>
                                 <dd>
                                   <span class="price-per-item--current">
-                                    {{-
-                                      'products.product.volume_pricing.price_at_each_html'
-                                      | t: price: variant_price
-                                    -}}
+                                    {{- 'products.product.volume_pricing.price_at_each_html' | t: price: variant_price -}}
                                   </span>
                                 </dd>
                               </dl>
@@ -1677,7 +1674,7 @@
         {
           "type": "header",
           "content": "t:sections.main-product.blocks.icon_with_text.settings.pairing_2.label"
-        },
+        },        
         {
           "type": "select",
           "id": "icon_2",
@@ -1877,7 +1874,7 @@
         {
           "type": "header",
           "content": "t:sections.main-product.blocks.icon_with_text.settings.pairing_3.label"
-        },
+        },        
         {
           "type": "select",
           "id": "icon_3",
@@ -2096,22 +2093,6 @@
     },
     {
       "type": "select",
-      "id": "mobile_element_order",
-      "options": [
-        {
-          "value": "default",
-          "label": "Default (Media first)"
-        },
-        {
-          "value": "info_first",
-          "label": "Info first"
-        }
-      ],
-      "default": "default",
-      "label": "Mobile element order"
-    },
-    {
-      "type": "select",
       "id": "media_size",
       "options": [
         {
@@ -2195,7 +2176,7 @@
       ],
       "default": "hide",
       "label": "t:sections.main-product.settings.mobile_thumbnails.label"
-    },
+    },    
     {
       "type": "select",
       "id": "media_position",
