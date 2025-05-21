@@ -19,6 +19,48 @@ if (!customElements.get('media-gallery')) {
             .addEventListener('click', this.setActiveMedia.bind(this, mediaToSwitch.dataset.target, false));
         });
         if (this.dataset.desktopLayout.includes('thumbnail') && this.mql.matches) this.removeListSemantic();
+
+        this.mediaItems = document.querySelectorAll('.product__media-item');
+        this.thumbnails = document.querySelectorAll('.product__media-thumbnail');
+        this.currentIndex = 0;
+        this.init();
+      }
+
+      init() {
+        if (this.thumbnails.length) {
+          this.thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => this.showMedia(index));
+          });
+        }
+
+        // Initialize first media item as active
+        if (this.mediaItems.length) {
+          this.showMedia(0);
+        }
+      }
+
+      showMedia(index) {
+        // Hide all media items
+        this.mediaItems.forEach((item) => {
+          item.classList.remove('is-active');
+        });
+
+        // Remove active state from all thumbnails
+        this.thumbnails.forEach((thumb) => {
+          thumb.classList.remove('is-active');
+        });
+
+        // Show selected media item
+        if (this.mediaItems[index]) {
+          this.mediaItems[index].classList.add('is-active');
+        }
+
+        // Activate selected thumbnail
+        if (this.thumbnails[index]) {
+          this.thumbnails[index].classList.add('is-active');
+        }
+
+        this.currentIndex = index;
       }
 
       onSlideChanged(event) {
@@ -45,7 +87,8 @@ if (!customElements.get('media-gallery')) {
 
           if (this.elements.thumbnails) {
             const activeThumbnail = this.elements.thumbnails.querySelector(`[data-target="${mediaId}"]`);
-            activeThumbnail.parentElement.firstChild !== activeThumbnail && activeThumbnail.parentElement.prepend(activeThumbnail);
+            activeThumbnail.parentElement.firstChild !== activeThumbnail &&
+              activeThumbnail.parentElement.prepend(activeThumbnail);
           }
 
           if (this.elements.viewer.slider) this.elements.viewer.resetPages();
@@ -115,3 +158,8 @@ if (!customElements.get('media-gallery')) {
     }
   );
 }
+
+// Initialize media gallery when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new MediaGallery();
+});

@@ -417,15 +417,6 @@ a.product__text {
   .product--mobile-columns .product__media-item {
     width: calc(50% - 1.5rem - var(--grid-mobile-horizontal-spacing));
   }
-
-  /* Mobile element ordering */
-  .product--mobile-info-first .product__media-wrapper {
-    order: 2;
-  }
-
-  .product--mobile-info-first .product__info-wrapper {
-    order: 1;
-  }
 }
 
 @media screen and (min-width: 750px) {
