@@ -139,12 +139,12 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
+          "background": "#f8f5f0",
           "background_gradient": "",
-          "text": "#121212",
-          "button": "#121212",
+          "text": "#2f2f2f",
+          "button": "#c8a97e",
           "button_label": "#ffffff",
-          "secondary_button_label": "#121212",
+          "secondary_button_label": "#c8a97e",
           "shadow": "#121212"
         }
       },
